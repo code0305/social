@@ -1,8 +1,20 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react'
 import UserContext from '../context/UserContext';
 import { useContext } from 'react';
-import { FaHeart, FaRegComment } from "react-icons/fa"
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Comment from '@mui/icons-material/Comment';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+
 export default function MyPost() {
     const [post,setPost]=useState([]);
     const {getPost,deletePost}=useContext(UserContext)
@@ -21,55 +33,105 @@ export default function MyPost() {
     }
     useEffect(()=>{
         fetchPost()
-        console.log(post)
     },[])
 
-    const baseurl = import.meta.env.VITE_BASE
-  return (
-    <div>
-        <div>
-            <h1 className=' bg-white text-black  rounded-xl  font-bold text-4xl m-8 p-5'>My Posts</h1>
+  const [currentImageIndex, setCurrentImageIndex] = useState({});
+    const handleImageClick = (postId, mediaLength) => {
+  setCurrentImageIndex((prev) => ({
+    ...prev,
+    [postId]: ((prev[postId] || 0) + 1) % mediaLength
+  }));
+};
 
-        </div>
 
-        <div className='flex flex-col gap-1 p-10 items-center'>
-        {   post.map((item)=>(
-                <div key={item._id} className="card bg-blue-100 text-black w-96 shadow-sm ">
-                    <h2 className=" p-2 text-xl card-title">{item.userId?.name}</h2>
-                    <figure>
-                        {
-                            item.media.map((pic,index)=>(
-                                <img
-                                key={index}
-                                    src={`${baseurl}uploads/${pic.mediaUrl}`}
-                                    alt="Shoes" 
-                                    />
-                            ))
-                        }
-                        
-                    </figure>
-                    <div className="card-body">
-               
-                        <p className='font-medium'>{item.caption}</p>
-                        <div className="flex gap-6 items-center mt-3">
-                            <div className="flex items-center gap-2 cursor-pointer">
-                                <FaHeart className="text-red-500 text-xl" />
-                                <span>{item.likes?.length || 0}</span>
-                            </div>
+return (
+  <div style={{ padding: "20px" }}>
 
-                            <div className="flex items-center gap-2 cursor-pointer">
-                                <FaRegComment className="text-xl" />
-                                <span>{item.comments?.length || 0}</span>
-                            </div>
-                        </div>
-                        <button onClick={()=>{deletePost(item._id)}} className="btn btn-info ml-auto w-25 text-white  bg-blue-600  ">Delete </button>
-                    </div>
-         
-                </div>
-            ))}
-        </div>
-    </div>
-    
-    )
+    {post.length === 0 ? (
+      <p style={{ textAlign: "center" }}>No posts available...</p>
+    ) : (
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "20px"
+        }}
+      >
+
+        {post.map((item) => (
+          <Card key={item._id} sx={{ width: "100%" }}>
+            
+            {/* Header */}
+            <CardHeader
+              avatar={
+                <Avatar sx={{ bgcolor: "red" }}>
+                  {item.userId?.name?.charAt(0) || "U"}
+                </Avatar>
+              }
+              action={
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={item.userId?.name || "Unknown User"}
+              subheader={new Date(item.createdAt).toLocaleDateString()}
+            />
+
+            {/* Image */}
+            {item.media?.length > 0 && (
+              <CardMedia
+                component="img"
+                height="200"
+                image={item.media[currentImageIndex[item._id] || 0].mediaUrl}
+                alt="post"
+                onClick={() =>
+                  handleImageClick(item._id, item.media.length)
+                }
+                sx={{ cursor: "pointer" }}
+              />
+            )}
+
+            {/* Content */}
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                {item.caption}
+              </Typography>
+            </CardContent>
+
+            {/* Actions */}
+            <CardActions>
+              <IconButton>
+                <FavoriteIcon />
+                <span>{item.likes?.length || 0}</span>
+              </IconButton>
+
+              <IconButton>
+                <Comment />
+                <span>{item.comments?.length || 0}</span>
+              </IconButton>
+
+              <button
+                onClick={() => deletePost(item._id)}
+                style={{
+                  marginLeft: "auto",
+                  background: "red",
+                  color: "white",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                  cursor: "pointer"
+                }}
+              >
+                Delete
+              </button>
+            </CardActions>
+
+          </Card>
+        ))}
+
+      </div>
+    )}
+  </div>
+);
 }
-

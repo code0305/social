@@ -4,7 +4,6 @@ import RegisterPage from './pages/RegisterPage'
 import {BrowserRouter, Route, Routes } from 'react-router-dom'
 import AddPost from './pages/AddPost'
 import Viewposts from './pages/ViewPosts'
-import AllPosts from './pages/AllPosts'
 import MyPosts from './pages/MyPosts'
 
 const App = () => {
@@ -16,7 +15,6 @@ const App = () => {
       <Route path = "/register" element={<RegisterPage/>}/>
       <Route path = "/addpost" element={<AddPost/>}/>
       <Route path='/posts' element={<Viewposts/>}/>
-      <Route path='/allposts' element={<AllPosts/>}/>
       <Route path='/myposts' element={<MyPosts/>}/>
     </Routes>
     </BrowserRouter>

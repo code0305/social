@@ -71,13 +71,24 @@ const UserProvider = ({children}) => {
         }
     }
 
+    const myPost = async () => {
+        try {
+            const res = await axios.get(`${BaseUrl}post/user`);
+            return res;
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
     const value = {
         //all states and functions
         handleRegister,
         handleLogin,
         createPost,
         deletePost,
-        getPost
+        getPost,
+        myPost
     }
   return (
     <UserContext.Provider value={value}>
