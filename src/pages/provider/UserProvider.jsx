@@ -17,9 +17,10 @@ const UserProvider = ({children}) => {
 
     const handleLogin =async(data)=>{
         try {
-            await axios.post(`${BaseUrl}auth/login`,data);
+            return await axios.post(`${BaseUrl}auth/login`,data);
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -37,11 +38,9 @@ const UserProvider = ({children}) => {
             })
 
             const res = await axios.post(`${BaseUrl}post/create`,formData,{
-                withCredentials:true,
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
-
             });
             return res;
         } catch (error) {

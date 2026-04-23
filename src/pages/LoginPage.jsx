@@ -17,7 +17,11 @@ const LoginPage = ()=>{
     e.preventDefault();
     try {
       const res = await handleLogin(data);
-      console.log(res);
+      if(res?.data?.success)
+      {
+        alert(res?.data?.message)
+      }
+
     } catch (error) {
       console.log("Login Error :"+error);
     }
