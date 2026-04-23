@@ -14,7 +14,8 @@ const LoginPage = ()=>{
   const handleSubmit =async(e)=>{
     e.preventDefault();
     try {
-      await handleLogin(data);
+      const res = await handleLogin(data);
+      console.log(res);
     } catch (error) {
       console.log("Login Error :"+error);
     }

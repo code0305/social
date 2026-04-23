@@ -76,7 +76,7 @@ const UserProvider = ({children}) => {
             const res = await axios.get(`${BaseUrl}post/user`);
             return res;
         } catch (error) {
-            console.log(error)
+            console.log(error.response)
             throw error
         }
     }
