@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import UserContext from '../context/UserContext';
 import { Link } from 'react-router-dom';
-
 const LoginPage = ()=>{
   
   const {handleLogin}=useContext(UserContext);
