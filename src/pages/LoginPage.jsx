@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import UserContext from '../context/UserContext';
-
+import { Link } from 'react-router-dom';
 const LoginPage = ()=>{
   const {handleLogin}=useContext(UserContext);
   const [data,setData]=useState({
@@ -76,6 +76,9 @@ const LoginPage = ()=>{
               >
                 Sign in
               </button>
+                            <Link to="/register" className="text-sm/6 font-medium text-indigo-400 hover:text-indigo-300">
+                    Don't have an account? Sign Up
+              </Link>
             </div>
         </div>
       </div>
